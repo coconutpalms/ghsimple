@@ -77,8 +77,6 @@
 
 (println "account: " dnsimple-account-id)
 
-(def domain-name "sunshinetechnologyprograms.com")
-
 (defn get-domain-id []
   (let [url (str "https://api.dnsimple.com/v2/" dnsimple-account-id "/domains/" domain-name)
         headers {:Authorization (str "Bearer " dnsimple-api-token)}
@@ -95,14 +93,16 @@
                  "Content-type" "application/json"
                  "Accept" "application/json"}
         body {:settings {:github_name github-username}}
-        _ (do
+        #_#__ (do
                 (println "URL:" url)
                 (println "Headers:" headers)
                 (println "Body:" body))
         response (http/post url {:headers headers :body (json/generate-string body)
                                  :as :json :interceptors interceptors})]
     (if (#{200 201 204} (:status response))
-      (println "GitHub Pages service successfully applied to domain.")
+      (do
+        (println "GitHub Pages service successfully applied to domain.")
+        #_(println response))
       (do (println "Failed to apply GitHub Pages service to domain.")
           (println "Response:" (:body response))))))
 
